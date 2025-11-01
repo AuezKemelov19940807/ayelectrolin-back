@@ -5,9 +5,9 @@ namespace App\Filament\Admin\Resources\CatalogItems;
 use App\Filament\Admin\Resources\CatalogItems\Pages\CreateCatalogItem;
 use App\Filament\Admin\Resources\CatalogItems\Pages\EditCatalogItem;
 use App\Filament\Admin\Resources\CatalogItems\Pages\ListCatalogItems;
+use App\Filament\Admin\Resources\CatalogItems\RelationManagers\SeoRelationManager;
 use App\Filament\Admin\Resources\CatalogItems\Schemas\CatalogItemForm;
 use App\Filament\Admin\Resources\CatalogItems\Tables\CatalogItemsTable;
-use App\Filament\Admin\Resources\CatalogItems\RelationManagers\SeoRelationManager;
 use App\Models\CatalogItem;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -36,8 +36,13 @@ class CatalogItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-             SeoRelationManager::class,
+            SeoRelationManager::class,
         ];
+    }
+
+    protected static function booted()
+    {
+        static::observe(\App\Observers\ImageToWebpObserver::class);
     }
 
     public static function getPages(): array

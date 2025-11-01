@@ -15,6 +15,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Forms\Components\Select;
 
 class SeoRelationManager extends RelationManager
 {
@@ -50,7 +51,7 @@ class SeoRelationManager extends RelationManager
     })
     ->columnSpanFull(),
 
-                TextInput::make('title')
+                TextInput::make('title_ru')
                     ->label('Title')
                     ->visible(fn($get) => $get('language') === 'ru')
                     ->dehydrated(fn($get) => $get('language') === 'ru')
@@ -74,7 +75,7 @@ class SeoRelationManager extends RelationManager
                         $component->state($record?->title_en ?? '');
                     }),
 
-                TextInput::make('og_title')
+                TextInput::make('og_title_ru')
                     ->label('OG Title')
                     ->visible(fn($get) => $get('language') === 'ru')
                     ->dehydrated(fn($get) => $get('language') === 'ru')
@@ -98,7 +99,7 @@ class SeoRelationManager extends RelationManager
                         $component->state($record?->og_title_en ?? '');
                     }),
 
-                Textarea::make('description')
+                Textarea::make('description_ru')
                     ->label('Description')
                     ->columnSpanFull()
                     ->visible(fn($get) => $get('language') === 'ru')
@@ -119,7 +120,7 @@ class SeoRelationManager extends RelationManager
                     ->dehydrated(fn($get) => $get('language') === 'en')
                     ->afterStateHydrated(fn($component, $state, $record) => $component->state($record?->description_en ?? '')),
 
-                Textarea::make('og_description')
+                Textarea::make('og_description_ru')
                     ->label('OG Description')
                     ->columnSpanFull()
                     ->visible(fn($get) => $get('language') === 'ru')
@@ -145,9 +146,16 @@ class SeoRelationManager extends RelationManager
                     ->image()
                     ->columnSpanFull(),
 
-                TextInput::make('twitter_card')
-                    ->label('Twitter Card Type')
-                    ->columnSpanFull(),
+                Select::make('twitter_card')
+                    ->label('Twitter Card')
+                    ->options([
+                        'summary' => 'Summary',
+                        'summary_large_image' => 'Summary Large Image',
+                        'app' => 'App',
+                        'player' => 'Player',
+                    ])
+                    ->columnSpanFull()
+                    ->required(false),
             ]);
     }
 

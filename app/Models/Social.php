@@ -10,6 +10,7 @@ class Social extends Model
         'contact_id',
         'platform',
         'link',
+        'icon',
     ];
 
 

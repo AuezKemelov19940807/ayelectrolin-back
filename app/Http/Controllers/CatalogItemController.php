@@ -58,7 +58,9 @@ class CatalogItemController extends Controller
             'description_en' => 'nullable|string',
             'slug' => 'required|string|unique:catalog_items,slug',
             'images' => 'nullable|array',
-            'technical_specs' => 'nullable|array',
+            'technical_specs_ru' => 'nullable|array',
+            'technical_specs_kk' => 'nullable|array',
+            'technical_specs_en' => 'nullable|array',
         ]);
 
         $item = $this->service->saveItem($data);
@@ -81,7 +83,9 @@ class CatalogItemController extends Controller
             'description_en' => 'nullable|string',
             'slug' => "nullable|string|unique:catalog_items,slug,{$id}",
             'images' => 'nullable|array',
-            'technical_specs' => 'nullable|array',
+            'technical_specs_ru' => 'nullable|array',
+            'technical_specs_kk' => 'nullable|array',
+            'technical_specs_en' => 'nullable|array',
         ]);
 
         $item = $this->service->saveItem($data, $id);

@@ -16,6 +16,34 @@ class CatalogItemService
         return in_array($lang, $this->allowedLangs) ? $lang : 'ru';
     }
 
+    public function getItems(string $lang, ?string $categorySlug = null): array
+    {
+        $lang = $this->normalizeLang($lang);
+
+        $query = CatalogItem::with('category');
+
+        if ($categorySlug) {
+            $query->whereHas('category', fn($q) => $q->where('slug', $categorySlug));
+        }
+
+        $items = $query->orderBy('id')->get();
+
+        return $items->map(function ($item) use ($lang) {
+            $firstImage = is_array($item->images) && !empty($item->images) ? Storage::url($item->images[0]) : null;
+
+            return [
+                'id' => $item->id,
+                'title' => $item->{"title_{$lang}"} ?? '',
+                'slug' => $item->slug,
+                'image' => $firstImage,
+                'category' => $item->category ? [
+                    'id' => $item->category->id,
+                    'slug' => $item->category->slug,
+                ] : null,
+            ];
+        })->toArray();
+    }
+
     public function getItemBySlug(string $slug, string $lang): ?array
     {
         $lang = $this->normalizeLang($lang);
@@ -27,20 +55,11 @@ class CatalogItemService
 
         if (!$item->seo) {
             $item->seo()->create([
-                'title_ru' => '',
-                'title_kk' => '',
-                'title_en' => '',
-                'og_title_ru' => '',
-                'og_title_kk' => '',
-                'og_title_en' => '',
-                'description_ru' => '',
-                'description_kk' => '',
-                'description_en' => '',
-                'og_description_ru' => '',
-                'og_description_kk' => '',
-                'og_description_en' => '',
-                'og_image' => null,
-                'twitter_card' => '',
+                'title_ru' => '', 'title_kk' => '', 'title_en' => '',
+                'og_title_ru' => '', 'og_title_kk' => '', 'og_title_en' => '',
+                'description_ru' => '', 'description_kk' => '', 'description_en' => '',
+                'og_description_ru' => '', 'og_description_kk' => '', 'og_description_en' => '',
+                'og_image' => null, 'twitter_card' => '',
             ]);
             $item->load('seo');
         }
@@ -57,7 +76,7 @@ class CatalogItemService
                 ->map(fn($img) => Storage::url($img))
                 ->values()
                 ->toArray(),
-            'technical_specs' => collect($item->technical_specs ?? [])
+            'technical_specs' => collect($item->{"technical_specs_{$lang}"} ?? [])
                 ->map(fn($value, $key) => [
                     'title' => $key,
                     'description' => $value,
@@ -83,20 +102,11 @@ class CatalogItemService
             $item = CatalogItem::with('seo')->findOrFail($itemId);
 
             $seo = $item->seo ?? $item->seo()->create([
-                'title_ru' => '',
-                'title_kk' => '',
-                'title_en' => '',
-                'og_title_ru' => '',
-                'og_title_kk' => '',
-                'og_title_en' => '',
-                'description_ru' => '',
-                'description_kk' => '',
-                'description_en' => '',
-                'og_description_ru' => '',
-                'og_description_kk' => '',
-                'og_description_en' => '',
-                'og_image' => null,
-                'twitter_card' => '',
+                'title_ru' => '', 'title_kk' => '', 'title_en' => '',
+                'og_title_ru' => '', 'og_title_kk' => '', 'og_title_en' => '',
+                'description_ru' => '', 'description_kk' => '', 'description_en' => '',
+                'og_description_ru' => '', 'og_description_kk' => '', 'og_description_en' => '',
+                'og_image' => null, 'twitter_card' => '',
             ]);
 
             $seo->update([

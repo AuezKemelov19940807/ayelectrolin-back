@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Resources\Catalogs\RelationManagers;
 
-use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -34,6 +33,7 @@ class ItemsRelationManager extends RelationManager
                 ->required()
                 ->options(function () {
                     $catalog = $this->ownerRecord;
+
                     return $catalog?->categories()
                         ->pluck('category_ru', 'id')
                         ->toArray() ?? [];
@@ -64,37 +64,35 @@ class ItemsRelationManager extends RelationManager
             // Названия
             TextInput::make('title_ru')
                 ->label('Название (RU)')
-                ->required(fn($get) => $get('language') === 'ru')
-                ->visible(fn($get) => $get('language') === 'ru')
+                ->required(fn ($get) => $get('language') === 'ru')
+                ->visible(fn ($get) => $get('language') === 'ru')
                 ->reactive()
-                ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state ?? ''))),
+                ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state ?? ''))),
 
             TextInput::make('title_kk')
                 ->label('Название (KK)')
-                ->visible(fn($get) => $get('language') === 'kk')
-                ->reactive()
-                ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state ?? ''))),
+                ->visible(fn ($get) => $get('language') === 'kk')
+                ->reactive(),
 
             TextInput::make('title_en')
                 ->label('Название (EN)')
-                ->visible(fn($get) => $get('language') === 'en')
-                ->reactive()
-                ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state ?? ''))),
+                ->visible(fn ($get) => $get('language') === 'en')
+                ->reactive(),
 
             // Описание
             Textarea::make('description_ru')
                 ->label('Описание (RU)')
-                ->visible(fn($get) => $get('language') === 'ru')
+                ->visible(fn ($get) => $get('language') === 'ru')
                 ->columnSpanFull(),
 
             Textarea::make('description_kk')
                 ->label('Описание (KK)')
-                ->visible(fn($get) => $get('language') === 'kk')
+                ->visible(fn ($get) => $get('language') === 'kk')
                 ->columnSpanFull(),
 
             Textarea::make('description_en')
                 ->label('Описание (EN)')
-                ->visible(fn($get) => $get('language') === 'en')
+                ->visible(fn ($get) => $get('language') === 'en')
                 ->columnSpanFull(),
 
             // Изображения
@@ -107,8 +105,21 @@ class ItemsRelationManager extends RelationManager
                 ->columnSpanFull(),
 
             // Технические характеристики
-            KeyValue::make('technical_specs')
-                ->label('Технические характеристики')
+            KeyValue::make('technical_specs_ru')
+                ->label('Технические характеристики (RU)')
+                ->visible(fn ($get) => $get('language') === 'ru')
+                ->addButtonLabel('Добавить характеристику')
+                ->columnSpanFull(),
+
+            KeyValue::make('technical_specs_kk')
+                ->label('Технические характеристики (KK)')
+                ->visible(fn ($get) => $get('language') === 'kk')
+                ->addButtonLabel('Добавить характеристику')
+                ->columnSpanFull(),
+
+            KeyValue::make('technical_specs_en')
+                ->label('Технические характеристики (EN)')
+                ->visible(fn ($get) => $get('language') === 'en')
                 ->addButtonLabel('Добавить характеристику')
                 ->columnSpanFull(),
 
@@ -117,7 +128,8 @@ class ItemsRelationManager extends RelationManager
                 ->label('Slug')
                 ->disabled()
                 ->required()
-                ->dehydrated(fn($state) => filled($state)),
+                ->visible(fn ($get) => $get('language') === 'ru')
+                ->dehydrated(fn ($state) => filled($state)),
         ]);
     }
 
@@ -140,6 +152,7 @@ class ItemsRelationManager extends RelationManager
                     ->mutateFormDataUsing(function (array $data, $livewire) {
                         $data['catalog_id'] = $livewire->ownerRecord->id ?? null;
                         $data['slug'] = Str::slug($data['title_ru'] ?? $data['title_kk'] ?? $data['title_en']);
+
                         return $data;
                     }),
             ])
@@ -158,12 +171,14 @@ class ItemsRelationManager extends RelationManager
     protected function beforeCreate(array $data): array
     {
         $data['slug'] = Str::slug($data['title_ru'] ?? $data['title_kk'] ?? $data['title_en']);
+
         return $data;
     }
 
     protected function beforeSave(array $data): array
     {
         $data['slug'] = Str::slug($data['title_ru'] ?? $data['title_kk'] ?? $data['title_en']);
+
         return $data;
     }
 }

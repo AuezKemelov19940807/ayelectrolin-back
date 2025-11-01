@@ -60,6 +60,7 @@ class ContactService
                 'id' => $s->id,
                 'platform' => $s->platform,
                 'link' => $s->link,
+                'icon' => $s->icon ? Storage::url($s->icon) : null,
             ])->toArray()
             : [],
         ];
@@ -89,6 +90,19 @@ class ContactService
                 'latitude' => $data['latitude'] ?? $contact->latitude,
                 'longitude' => $data['longitude'] ?? $contact->longitude,
             ]);
+
+             if (isset($data['socials']) && is_array($data['socials'])) {
+                foreach ($data['socials'] as $s) {
+                    $social = $contact->socials()->find($s['id']);
+                    if ($social) {
+                        $social->update([
+                            'platform' => $s['platform'] ?? $social->platform,
+                            'link' => $s['link'] ?? $social->link,
+                            'icon' => $s['icon'] ?? $social->icon,
+                        ]);
+                    }
+                }
+            }
 
             return $this->getContact($lang);
         });

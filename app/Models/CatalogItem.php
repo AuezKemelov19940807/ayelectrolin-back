@@ -15,12 +15,14 @@ class CatalogItem extends Model
         'description_ru', 'description_kk', 'description_en',
         'slug',
         'images',
-        'technical_specs',
+        'technical_specs_ru', 'technical_specs_kk', 'technical_specs_en',
     ];
 
     protected $casts = [
         'images' => 'array',
-        'technical_specs' => 'array',
+        'technical_specs_ru' => 'array',
+        'technical_specs_kk' => 'array',
+        'technical_specs_en' => 'array',
     ];
 
     public function category()
@@ -28,14 +30,8 @@ class CatalogItem extends Model
         return $this->belongsTo(Category::class);
     }
 
-    protected static function booted()
-    {
-        static::observe(\App\Observers\ImageToWebpObserver::class);
-    }
-
     public function seo()
     {
         return $this->hasOne(CatalogItemSeo::class, 'catalog_item_id');
     }
-
 }

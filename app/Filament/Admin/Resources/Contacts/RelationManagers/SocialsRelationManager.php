@@ -7,9 +7,9 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -28,18 +28,29 @@ class SocialsRelationManager extends RelationManager
                     ->required(),
                 TextInput::make('link')
                     ->required(),
+                FileUpload::make('icon') // теперь FileUpload для иконки
+                    ->label('Icon')
+                    ->directory('social-icons') // папка для хранения
+                    ->image() // только изображение
+                    ->disk('public')
+                    ->required(false),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('title')
+            ->recordTitleAttribute('platform')
             ->columns([
                 TextColumn::make('platform')
                     ->searchable(),
                 TextColumn::make('link')
                     ->searchable(),
+                TextColumn::make('icon') // выводим путь к файлу
+                    ->label('Icon')
+                    ->formatStateUsing(fn ($state) => $state ? '<img src="'.asset('storage/'.$state).'" class="h-6 w-6" />' : '-')
+                    ->html()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -58,7 +69,6 @@ class SocialsRelationManager extends RelationManager
             ])
             ->recordActions([
                 EditAction::make(),
-                // DissociateAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

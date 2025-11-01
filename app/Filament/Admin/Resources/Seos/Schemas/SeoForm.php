@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\Seos\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\ToggleButtons;
@@ -101,9 +102,16 @@ class SeoForm
                     ->image()
                     ->columnSpanFull(),
 
-                TextInput::make('twitter_card')
+                Select::make('twitter_card')
                     ->label('Twitter Card')
-                    ->columnSpanFull(),
+                    ->options([
+                        'summary' => 'Summary',
+                        'summary_large_image' => 'Summary Large Image',
+                        'app' => 'App',
+                        'player' => 'Player',
+                    ])
+                    ->columnSpanFull()
+                    ->required(false),
             ]);
     }
 }
