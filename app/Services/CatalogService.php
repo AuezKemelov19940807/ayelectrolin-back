@@ -26,31 +26,31 @@ class CatalogService
         $catalog = Catalog::with('seo')->first();
 
         if (!$catalog) {
-            // Создаём пустой каталог
             $catalog = Catalog::create([
                 'title_ru' => '',
                 'title_kk' => '',
                 'title_en' => '',
             ]);
+
+            $catalog->seo()->create([
+                'title_ru' => '',
+                'title_kk' => '',
+                'title_en' => '',
+                'og_title_ru' => '',
+                'og_title_kk' => '',
+                'og_title_en' => '',
+                'description_ru' => '',
+                'description_kk' => '',
+                'description_en' => '',
+                'og_description_ru' => '',
+                'og_description_kk' => '',
+                'og_description_en' => '',
+                'og_image' => null,
+                'twitter_card' => '',
+            ]);
         }
 
-        // Создаём SEO, если его нет
-        $seo = $catalog->seo ?? $catalog->seo()->create([
-            'title_ru' => '',
-            'title_kk' => '',
-            'title_en' => '',
-            'og_title_ru' => '',
-            'og_title_kk' => '',
-            'og_title_en' => '',
-            'description_ru' => '',
-            'description_kk' => '',
-            'description_en' => '',
-            'og_description_ru' => '',
-            'og_description_kk' => '',
-            'og_description_en' => '',
-            'og_image' => null,
-            'twitter_card' => null,
-        ]);
+        $seo = $catalog->seo;
 
         return [
             'id' => $catalog->id,
@@ -80,7 +80,6 @@ class CatalogService
                 "title_{$lang}" => $data['title'] ?? $catalog->{"title_{$lang}"},
             ]);
 
-            // Создаём SEO, если его нет
             $seo = $catalog->seo ?? $catalog->seo()->create([
                 'title_ru' => '',
                 'title_kk' => '',
@@ -95,7 +94,7 @@ class CatalogService
                 'og_description_kk' => '',
                 'og_description_en' => '',
                 'og_image' => null,
-                'twitter_card' => null,
+                'twitter_card' => '',
             ]);
 
             $seo->update([
@@ -106,15 +105,15 @@ class CatalogService
                 "twitter_card" => $data['seo']['twitter_card'] ?? $seo->twitter_card,
             ]);
 
-            if (isset($data['seo']['og_image'])) {
-                if ($request->hasFile('og_image')) {
-                    $path = $request->file('og_image')->store('seo', 'public');
+            // Обработка og_image
+            if (!empty($data['seo']['og_image'])) {
+                if ($request->hasFile('seo.og_image')) {
+                    $path = $request->file('seo.og_image')->store('seo', 'public');
                     $seo->og_image = $path;
-                    $seo->save();
                 } elseif (is_string($data['seo']['og_image'])) {
                     $seo->og_image = $data['seo']['og_image'];
-                    $seo->save();
                 }
+                $seo->save();
             }
 
             return $this->getCatalog($lang);
