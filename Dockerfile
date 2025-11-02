@@ -1,21 +1,23 @@
-# Используем готовый образ с PHP и Composer
 FROM php:8.2-cli
 
 # Устанавливаем расширения PHP
 RUN apt-get update && apt-get install -y unzip git libzip-dev && docker-php-ext-install zip pdo pdo_mysql
 
-# Копируем проект
+# Устанавливаем Composer глобально
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Копируем проект вместе с .env
 WORKDIR /app
 COPY . .
 
-# Устанавливаем зависимости Laravel
-RUN curl -sS https://getcomposer.org/installer | php && php composer.phar install --no-dev --optimize-autoloader
+# Установка зависимостей Laravel
+RUN composer install --no-dev --optimize-autoloader
 
-# Генерируем ключ Laravel
+# Генерация ключа Laravel
 RUN php artisan key:generate
 
-# Laravel слушает порт 8000
+# Порт для сервиса
 EXPOSE 8000
 
 # Запуск приложения
-CMD php artisan serve --host=0.0.0.0 --port=8000
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
