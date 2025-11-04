@@ -20,15 +20,11 @@ RUN chown -R www-data:www-data /app
 # Устанавливаем зависимости Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Генерация ключа приложения
+# Генерация ключа приложения (если .env существует)
 RUN php artisan key:generate || true
 
-# Копируем скрипт и делаем его исполняемым
-COPY start.sh ./
-RUN chmod +x start.sh
-
-# Открываем порт 8000
+# Открываем порт 8000 (Laravel default)
 EXPOSE 8000
 
-# Запуск скрипта
-CMD ["./start.sh"]
+# Запуск Laravel сервера без миграций
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
