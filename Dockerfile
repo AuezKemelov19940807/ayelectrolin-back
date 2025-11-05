@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Устанавливаем зависимости и PHP-расширения
+# Зависимости и PHP-расширения
 RUN apt-get update && apt-get install -y \
     unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libexif-dev curl \
     && docker-php-ext-configure intl \
@@ -17,30 +17,23 @@ COPY . .
 # Права
 RUN chown -R www-data:www-data /app
 
-# Laravel зависимости
+# Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Filament ассеты
-RUN php artisan filament:assets --ansi || true
+# Filament
+RUN php artisan filament:assets --ansi
 
-# Генерация ключа (если нет)
+# Storage link
+RUN php artisan storage:link
+
+# Генерация ключа
 RUN php artisan key:generate || true
 
-# Кэш (config, routes, views)
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
-
-# Storage symlink и копирование для Railway
-RUN php artisan storage:link
-RUN mkdir -p public/storage
-RUN cp -r storage/app/public/* public/storage/ || true
-
 # Копируем entrypoint
-COPY entrypoint.sh /entrypoint.sh
+COPY docker-entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 
-# Используем entrypoint для старта контейнера
+# Запуск через entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
