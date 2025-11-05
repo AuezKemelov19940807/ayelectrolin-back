@@ -30,7 +30,7 @@ RUN php artisan storage:link
 RUN php artisan key:generate || true
 
 # Копируем entrypoint
-COPY docker-entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
