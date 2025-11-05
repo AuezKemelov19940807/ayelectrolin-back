@@ -20,6 +20,9 @@ RUN chown -R www-data:www-data /app
 # Устанавливаем зависимости Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
+# Публикуем ассеты Filament
+RUN php artisan filament:assets --ansi || true
+
 # Генерация ключа
 RUN php artisan key:generate || true
 
