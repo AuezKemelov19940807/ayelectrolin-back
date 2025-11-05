@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Устанавливаем зависимости и PHP-расширения
+# Зависимости и PHP-расширения
 RUN apt-get update && apt-get install -y \
     unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libexif-dev curl \
     && docker-php-ext-configure intl \
@@ -8,30 +8,36 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable exif intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Устанавливаем Composer
+# Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /app
 COPY . .
 
-# Настраиваем права
+# Права
 RUN chown -R www-data:www-data /app
 
-# Устанавливаем зависимости Laravel
+# Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Публикуем ассеты Filament
-RUN php artisan filament:assets --ansi || true
-
-# Генерация ключа
-RUN php artisan key:generate || true
-
-# Кэшируем конфиги, маршруты и представления
+# Очистка и кэш
+RUN php artisan cache:clear
+RUN php artisan config:clear
+RUN php artisan route:clear
+RUN php artisan view:clear
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
+# Filament
+RUN php artisan filament:assets --force --ansi
+
+# Storage link
+RUN php artisan storage:link
+
+# Генерация ключа
+RUN php artisan key:generate || true
+
 EXPOSE 8000
 
-# Запуск миграций и Laravel сервера
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
