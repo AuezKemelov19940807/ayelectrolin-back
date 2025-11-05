@@ -1,16 +1,22 @@
 #!/bin/sh
 set -e
 
-# Ждём доступности базы (опционально)
-# пока база не откроется на хосте и порту
-# можно использовать утилиту wait-for-it.sh или простой цикл
+# Ждём базу (опционально)
+# Можно добавить wait-for-it.sh или свой цикл, если нужно
 
-# Миграции и кэш
+echo "Запускаем миграции и кэш Laravel..."
+
 php artisan migrate --force
+
 php artisan cache:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Запуск сервера
+# Файлы storage → public
+php artisan storage:link || true
+mkdir -p public/storage
+cp -r storage/app/public/* public/storage/ || true
+
+echo "Запуск Laravel сервера..."
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
