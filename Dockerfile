@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Зависимости и PHP-расширения
+# Устанавливаем зависимости и PHP-расширения
 RUN apt-get update && apt-get install -y \
     unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libexif-dev curl \
     && docker-php-ext-configure intl \
@@ -8,36 +8,32 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable exif intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Composer
+# Устанавливаем Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /app
 COPY . .
 
-# Права
+# Настраиваем права
 RUN chown -R www-data:www-data /app
 
-# Laravel
+# Устанавливаем зависимости Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Очистка и кэш
-RUN php artisan cache:clear
-RUN php artisan config:clear
-RUN php artisan route:clear
-RUN php artisan view:clear
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
-
-# Filament
+# Публикуем ассеты Filament
 RUN php artisan filament:assets --force --ansi
 
-# Storage link
+# Создаём storage symlink
 RUN php artisan storage:link
 
 # Генерация ключа
 RUN php artisan key:generate || true
 
+# Копируем entrypoint
+COPY docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8000
 
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+# Запуск через entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
