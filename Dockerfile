@@ -26,6 +26,11 @@ RUN php artisan filament:assets --ansi || true
 # Генерация ключа
 RUN php artisan key:generate || true
 
+# Кэшируем конфиги, маршруты и представления
+RUN php artisan config:cache
+RUN php artisan route:cache
+RUN php artisan view:cache
+
 EXPOSE 8000
 
 # Запуск миграций и Laravel сервера
