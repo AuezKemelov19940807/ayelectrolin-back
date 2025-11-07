@@ -1,31 +1,25 @@
 #!/bin/sh
 set -e
 
-# Ждём базу (опционально)
-# Можно добавить wait-for-it.sh или свой цикл, если нужно
-
-echo "Запускаем миграции и кэш Laravel..."
-
+echo "Ждём базу и запускаем миграции..."
 php artisan migrate --force
 
-
+echo "Создаём нового администратора, если его нет..."
 php artisan tinker --execute "\
-App\Models\User::create([
-    'name' => 'New Admin',
-    'email' => 'ayelectrolin@demo.com',
-    'password' => bcrypt('admin123'),
-    'is_admin' => true \
-]);"
+if (!App\Models\User::where('email', 'admin@railway.app')->exists()) {
+    App\Models\User::create([
+        'name' => 'Railway Admin',
+        'email' => 'admin@railway.app',
+        'password' => bcrypt('admin123'),
+        'is_admin' => 1
+    ]);
+}"
 
+echo "Очищаем кэш и готовим всё к работе..."
 php artisan cache:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 
-# Файлы storage → public
-php artisan storage:link || true
-mkdir -p public/storage
-cp -r storage/app/public/* public/storage/ || true
-
-echo "Запуск Laravel сервера..."
+echo "Запускаем сервер Laravel..."
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}

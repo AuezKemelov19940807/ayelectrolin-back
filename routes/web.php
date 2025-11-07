@@ -2,11 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return redirect('/admin');
-// });
-
-
 Route::get('/', function () {
     if (Auth::check()) {
         // Если пользователь вошёл — отправляем в админку
