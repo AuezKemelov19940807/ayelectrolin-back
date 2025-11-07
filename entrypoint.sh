@@ -14,6 +14,7 @@ App\Models\User::create([
     'name' => 'New Admin',
     'email' => 'newadmin@local.com',
     'password' => bcrypt('admin123'),
+    'is_admin' => true \
 ]);"
 
 php artisan cache:clear
