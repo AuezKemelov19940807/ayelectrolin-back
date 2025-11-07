@@ -13,12 +13,12 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    public function boot(): void
-    {
-        Schema::defaultStringLength(191);
+    // public function boot(): void
+    // {
+    //     Schema::defaultStringLength(191);
 
-        if (env('FORCE_HTTPS', false)) {
-            URL::forceScheme('https');
-        }
-    }
+    //     if (env('FORCE_HTTPS', false)) {
+    //         URL::forceScheme('https');
+    //     }
+    // }
 }

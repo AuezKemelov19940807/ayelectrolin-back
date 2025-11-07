@@ -13,6 +13,7 @@ use App\Http\Controllers\CatalogItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CatalogItemSeoController;
+use App\Http\Controllers\GuaranteeController;
 
 
 
