@@ -12,7 +12,7 @@ php artisan migrate --force
 php artisan tinker --execute "\
 App\Models\User::create([
     'name' => 'New Admin',
-    'email' => 'ayelectrolin@local.com',
+    'email' => 'ayelectrolin@demo.com',
     'password' => bcrypt('admin123'),
     'is_admin' => true \
 ]);"
