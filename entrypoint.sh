@@ -8,6 +8,14 @@ echo "Запускаем миграции и кэш Laravel..."
 
 php artisan migrate --force
 
+
+php artisan tinker --execute "\
+App\Models\User::create([
+    'name' => 'New Admin',
+    'email' => 'newadmin@local.com',
+    'password' => bcrypt('admin123'),
+]);"
+
 php artisan cache:clear
 php artisan config:cache
 php artisan route:cache
