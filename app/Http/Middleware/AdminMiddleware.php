@@ -8,10 +8,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     if (!auth()->check() || !auth()->user()->is_admin) {
+    //         abort(403, 'Access denied');
+    //     }
+
+    //     return $next($request);
+    // }
+
+     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->is_admin) {
-            abort(403, 'Access denied');
+        // Пропускаем проверку is_admin
+        if (!auth()->check()) {
+            abort(403, 'Access denied'); // блокируем только если не авторизован
         }
 
         return $next($request);

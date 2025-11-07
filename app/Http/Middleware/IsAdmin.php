@@ -11,14 +11,24 @@ class IsAdmin
     /**
      * Handle an incoming request.
      */
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //     $user = $request->user();
+
+    //     if (!$user || !$user->is_admin) {
+    //         abort(403, 'Access denied');
+    //     }
+
+    //     return $next($request);
+    // }
+
     public function handle(Request $request, Closure $next): Response
-    {
-        $user = $request->user();
-
-        if (!$user || !$user->is_admin) {
-            abort(403, 'Access denied');
-        }
-
-        return $next($request);
+{
+    if (!$request->user()) {
+        abort(403, 'Access denied');
     }
+
+    return $next($request);
+}
+
 }
