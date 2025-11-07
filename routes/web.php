@@ -18,6 +18,6 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::middleware('auth')->group(function () {
   return redirect('/admin');
 });
