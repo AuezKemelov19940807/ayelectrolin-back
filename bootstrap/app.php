@@ -3,6 +3,16 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+
+// Сразу доверяем все прокси и учитываем заголовки X-Forwarded
+Request::setTrustedProxies(
+    ['*'], // доверяем все прокси
+    Request::HEADER_X_FORWARDED_FOR |
+    Request::HEADER_X_FORWARDED_HOST |
+    Request::HEADER_X_FORWARDED_PROTO |
+    Request::HEADER_X_FORWARDED_PORT
+);
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,11 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Illuminate\Foundation\Configuration\Middleware $middleware) {
-        // Глобально добавляем TrustProxies
-        $middleware->prepend(\App\Http\Middleware\TrustProxies::class);
-
-        // Остальные алиасы
+    ->withMiddleware(function (Middleware $middleware) {
+        // Алиасы middleware
         $middleware->alias([
             'is_admin' => \App\Http\Middleware\IsAdmin::class,
             'admin'    => \App\Http\Middleware\AdminMiddleware::class,
