@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/whoami', function () {
-    return [
-        'auth' => Auth::check(),
-        'user' => Auth::user(),
-        'session' => session()->all()
-    ];
+    if (Auth::check()) {
+         return Auth::user(); // Показываем email залогиненного
+    }
+
+    return 'guest';
 });
 
 Route::get('/', function () {
@@ -24,26 +24,6 @@ Route::get('/', function () {
 });
 
 
-// Route::middleware('auth')->group(function () {
-//   return redirect('/admin');
-// });
-
-Route::get('/admin/login', function () {
-    return 'Страница входа (заглушка)';
-})->name('login'); // 👈 добавили имя login
-
-Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect('/admin');
-    }
-    return redirect('/admin/login');
-});
-
 Route::middleware('auth')->group(function () {
-    Route::get('/admin', function () {
-        return [
-            'message' => 'Добро пожаловать в админку',
-            'user' => Auth::user(),
-        ];
-    });
+  return redirect('/admin');
 });
