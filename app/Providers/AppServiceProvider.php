@@ -13,12 +13,14 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    // public function boot(): void
-    // {
-    //     Schema::defaultStringLength(191);
+  public function boot(): void
+    {
+        // Чтобы старые миграции с VARCHAR(255) работали на старых MySQL
+        Schema::defaultStringLength(191);
 
-    //     if (env('FORCE_HTTPS', false)) {
-    //         URL::forceScheme('https');
-    //     }
-    // }
+        // Форсируем HTTPS только на production
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
+    }
 }
