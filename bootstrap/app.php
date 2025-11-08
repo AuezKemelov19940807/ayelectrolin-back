@@ -14,10 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
    ->withMiddleware(function (Illuminate\Foundation\Configuration\Middleware $middleware) {
     $middleware->alias([
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'trust_proxies' => \App\Http\Middleware\TrustProxies::class,
+
     ]);
 
-      $middleware->prepend(\App\Http\Middleware\TrustProxies::class);
+
 
 })
     ->withExceptions(function (Exceptions $exceptions): void {
