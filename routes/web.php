@@ -24,12 +24,14 @@ Route::get('/', function () {
 
 // 👇 защищаем /admin
 Route::middleware(['web', 'auth'])->group(function () {
-    Route::get('/admin', function () {
-        return response()->json([
-            'message' => 'Добро пожаловать в админку',
-            'user' => Auth::user(),
-        ]);
-    });
+    // Route::get('/admin', function () {
+        return redirect('/admin');
+        // return response()->json([
+        //     'message' => 'Добро пожаловать в админку',
+        //     'redirect' => '/admin',
+        //     'user' => Auth::user(),
+        // ]);
+    // });
 });
 
 // Route::get('/', function () {
