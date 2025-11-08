@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/whoami', function () {
     if (Auth::check()) {
-        return Auth::user()->email; // Показываем email залогиненного
+         return Auth::user(); // Показываем email залогиненного
     }
 
     return 'guest';
