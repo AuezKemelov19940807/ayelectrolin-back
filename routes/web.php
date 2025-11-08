@@ -24,6 +24,19 @@ Route::get('/', function () {
 });
 
 
+// Route::middleware('auth')->group(function () {
+//   return redirect('/admin');
+// });
+
 Route::middleware('auth')->group(function () {
-  return redirect('/admin');
+    Route::get('/', function () {
+        return redirect('/admin');
+    });
+
+    Route::get('/admin', function () {
+        return [
+            'message' => 'Добро пожаловать в админку',
+            'user' => Auth::user(),
+        ];
+    });
 });
