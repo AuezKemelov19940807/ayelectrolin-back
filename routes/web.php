@@ -17,17 +17,32 @@ Route::get('/whoami', function () {
     ]);
 });
 
+
 Route::get('/', function () {
-    if (Auth::check()) {
-        // Если пользователь вошёл — отправляем в админку
-        return redirect('/admin');
-    }
-
-    // Если не вошёл — на страницу входа
-    return redirect('admin/login');
+    return redirect(Auth::check() ? '/admin' : '/admin/login');
 });
 
-
-Route::middleware('auth')->group(function () {
-  return redirect('/admin');
+// 👇 защищаем /admin
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/admin', function () {
+        return response()->json([
+            'message' => 'Добро пожаловать в админку',
+            'user' => Auth::user(),
+        ]);
+    });
 });
+
+// Route::get('/', function () {
+//     if (Auth::check()) {
+//         // Если пользователь вошёл — отправляем в админку
+//         return redirect('/admin');
+//     }
+
+//     // Если не вошёл — на страницу входа
+//     return redirect('admin/login');
+// });
+
+
+// Route::middleware('auth')->group(function () {
+//   return redirect('/admin');
+// });
