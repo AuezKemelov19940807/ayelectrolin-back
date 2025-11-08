@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/whoami', function () {
+    return auth()->user() ?? 'guest';
+});
+
 Route::get('/', function () {
     if (Auth::check()) {
         // Если пользователь вошёл — отправляем в админку
