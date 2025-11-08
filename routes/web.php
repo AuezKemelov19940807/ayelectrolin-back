@@ -34,6 +34,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     // });
 });
 
+
+Route::get('/test-secure', function() {
+    return request()->isSecure() ? 'HTTPS' : 'HTTP';
+});
+
 // Route::get('/', function () {
 //     if (Auth::check()) {
 //         // Если пользователь вошёл — отправляем в админку
