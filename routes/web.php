@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/whoami', function () {
-    if (Auth::check()) {
-         return Auth::user(); // Показываем email залогиненного
-    }
-
-    return 'guest';
+    return [
+        'auth' => Auth::check(),
+        'user' => Auth::user(),
+        'session' => session()->all()
+    ];
 });
 
 Route::get('/', function () {
