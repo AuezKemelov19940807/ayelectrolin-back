@@ -35,8 +35,21 @@ Route::middleware(['web', 'auth'])->group(function () {
 });
 
 
-Route::get('/test-secure', function() {
-    return request()->isSecure() ? 'HTTPS' : 'HTTP';
+Route::get('/test-secure', function () {
+    return response()->json([
+        'https_detected' => request()->isSecure(),   // true если HTTPS
+        'scheme' => request()->getScheme(),         // http или https
+        'full_url' => request()->fullUrl(),         // полный URL запроса
+        'auth' => Auth::check(),                    // авторизован ли пользователь
+        'user' => Auth::user(),                     // данные пользователя, если есть
+        'session_id' => session()->getId(),         // текущий session_id
+        'session_data' => session()->all(),        // все данные сессии
+        'cookies' => request()->cookies->all(),    // текущие куки
+        'headers' => [
+            'X-Forwarded-Proto' => request()->header('X-Forwarded-Proto'),
+            'X-Forwarded-For' => request()->header('X-Forwarded-For'),
+        ],
+    ]);
 });
 
 // Route::get('/', function () {

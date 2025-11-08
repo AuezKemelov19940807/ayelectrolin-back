@@ -8,12 +8,17 @@ use Illuminate\Http\Request;
 class TrustProxies extends Middleware
 {
     /**
-     * Указываем прокси-серверы. '*' = все.
+     * Все прокси доверенные.
      */
     protected $proxies = '*';
 
     /**
-     * Какие заголовки учитывать для определения HTTPS.
+     * Заголовки, которые использовать для определения HTTPS.
+     * В Laravel 12 нужно указывать вручную:
      */
-    protected $headers = Request::HEADER_X_FORWARDED_ALL;
+    protected $headers = 
+        Request::HEADER_X_FORWARDED_FOR |
+        Request::HEADER_X_FORWARDED_HOST |
+        Request::HEADER_X_FORWARDED_PROTO |
+        Request::HEADER_X_FORWARDED_PORT;
 }
