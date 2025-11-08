@@ -28,11 +28,18 @@ Route::get('/', function () {
 //   return redirect('/admin');
 // });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return redirect('/admin');
-    });
+Route::get('/admin/login', function () {
+    return 'Страница входа (заглушка)';
+})->name('login'); // 👈 добавили имя login
 
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('/admin');
+    }
+    return redirect('/admin/login');
+});
+
+Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {
         return [
             'message' => 'Добро пожаловать в админку',
