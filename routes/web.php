@@ -3,8 +3,14 @@
 use Illuminate\Support\Facades\Route;
 
 
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/whoami', function () {
-    return auth()->user() ?? 'guest';
+    if (Auth::check()) {
+        return Auth::user()->email; // Показываем email залогиненного
+    }
+
+    return 'guest';
 });
 
 Route::get('/', function () {

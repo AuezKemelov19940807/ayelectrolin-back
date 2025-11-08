@@ -4,16 +4,14 @@ set -e
 echo "Ждём базу и запускаем миграции..."
 php artisan migrate --force
 
-echo "Создаём нового администратора, если его нет..."
+echo "Создаём или обновляем администратора..."
 php artisan tinker --execute "\
-if (!App\Models\User::where('email', 'admin@railway.app')->exists()) {
-    App\Models\User::create([
-        'name' => 'Railway Admin',
-        'email' => 'admin@railway.app',
-        'password' => bcrypt('admin123'),
-        'is_admin' => 1
-    ]);
-}"
+\$user = App\Models\User::firstOrNew(['email' => 'admin@railway.app']); \
+\$user->name = 'Railway Admin'; \
+\$user->is_admin = 1; \
+\$user->email_verified_at = now(); \
+\$user->password = bcrypt('admin123'); \
+\$user->save();"
 
 echo "Очищаем кэш и готовим всё к работе..."
 php artisan cache:clear
