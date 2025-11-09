@@ -14,6 +14,7 @@ Request::setTrustedProxies(
     Request::HEADER_X_FORWARDED_PORT
 );
 
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -22,10 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->prepend(\App\Http\Middleware\TrustProxies::class);
         // Алиасы middleware
         $middleware->alias([
-            'is_admin' => \App\Http\Middleware\IsAdmin::class,
-            'admin'    => \App\Http\Middleware\AdminMiddleware::class,
+            // 'is_admin' => \App\Http\Middleware\IsAdmin::class,
+            // 'admin'    => \App\Http\Middleware\AdminMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
