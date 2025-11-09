@@ -13,14 +13,10 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    public function boot(): void
-    {
-        // Ограничение длины строк для старых MySQL
-        Schema::defaultStringLength(191);
-
-        // Если приложение работает в проде — форсим HTTPS
-        if (config('app.env') === 'production' || env('FORCE_HTTPS', false)) {
-            URL::forceScheme('https');
-        }
+public function boot(): void
+{
+    if(app()->environment('production')) {
+        \Illuminate\Support\Facades\URL::forceScheme('https');
     }
+}
 }
