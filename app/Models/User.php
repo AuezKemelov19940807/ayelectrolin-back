@@ -52,6 +52,8 @@ class User extends Authenticatable
 
     public function canAccessPanel(Panel $panel): bool
     {
+        \Log::info('canAccessPanel called for user: '.$this->email);
+
         return true;
     }
 }
