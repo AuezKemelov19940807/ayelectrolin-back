@@ -12,6 +12,11 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /app
+
+# Копируем storage/public, чтобы файлы были в контейнере
+COPY storage/app/public storage/app/public
+
+# Копируем остальной проект
 COPY . .
 
 # Права
