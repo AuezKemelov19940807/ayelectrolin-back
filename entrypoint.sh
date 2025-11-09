@@ -19,5 +19,14 @@ php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 
+echo "Принудительно задаём HTTPS, если X-Forwarded-Proto=https"
+php artisan tinker --execute "\
+if (request()->header('X-Forwarded-Proto') === 'https') { \
+    \Illuminate\Support\Facades\URL::forceScheme('https'); \
+    \Log::info('Force HTTPS: X-Forwarded-Proto detected'); \
+} else { \
+    \Log::info('Scheme detected: '.request()->getScheme()); \
+}"
+
 echo "Запускаем сервер Laravel..."
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
