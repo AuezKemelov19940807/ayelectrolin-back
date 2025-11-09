@@ -8,20 +8,25 @@ use Illuminate\Http\Request;
 class TrustProxies extends Middleware
 {
     /**
-     * Доверять всем прокси (в Railway это обязательно!)
-     *
-     * @var array<int, string>|string|null
+     * Доверенные прокси. '*' = все.
      */
     protected $proxies = '*';
 
     /**
-     * Использовать все заголовки X-Forwarded-* для определения схемы.
-     *
-     * @var int
+     * Заголовки, которые учитывать.
      */
-    protected $headers = Request::HEADER_X_FORWARDED_FOR
-                       | Request::HEADER_X_FORWARDED_HOST
-                       | Request::HEADER_X_FORWARDED_PORT
-                       | Request::HEADER_X_FORWARDED_PROTO
-                       | Request::HEADER_X_FORWARDED_AWS_ELB;
+    protected $headers = Request::HEADER_X_FORWARDED_FOR |
+                         Request::HEADER_X_FORWARDED_HOST |
+                         Request::HEADER_X_FORWARDED_PROTO |
+                         Request::HEADER_X_FORWARDED_PORT;
+
+    public function handle(Request $request, \Closure $next)
+    {
+        // Логируем протокол для проверки
+        \Log::info('Scheme detected: ' . $request->getScheme());
+        \Log::info('Is secure? ' . ($request->isSecure() ? 'yes' : 'no'));
+        \Log::info('X-Forwarded-Proto: ' . $request->header('X-Forwarded-Proto'));
+
+        return parent::handle($request, $next);
+    }
 }
