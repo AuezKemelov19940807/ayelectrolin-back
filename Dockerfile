@@ -25,9 +25,11 @@ RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interacti
 # Filament assets
 RUN php artisan filament:assets --ansi
 
-# Копируем storage в public для прямого доступа (вместо storage:link)
+# Копируем storage в public для прямого доступа вместо symlink
 RUN rm -rf public/storage \
-    && cp -r storage/app/public public/storage
+    && cp -r storage/app/public public/storage \
+    && chown -R www-data:www-data public/storage \
+    && chmod -R 755 public/storage
 
 # Генерация ключа Laravel
 RUN php artisan key:generate || true
