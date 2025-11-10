@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Зависимости и PHP-расширения
+# Установка зависимостей и PHP-расширений
 RUN apt-get update && apt-get install -y \
     unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libexif-dev curl \
     && docker-php-ext-configure intl \
@@ -13,25 +13,23 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /app
 
-# Копируем storage/public, чтобы файлы были в контейнере
-COPY storage/app/public storage/app/public
-
-# Копируем остальной проект
+# Копируем весь проект
 COPY . .
 
 # Права
 RUN chown -R www-data:www-data /app
 
-# Laravel
+# Установка зависимостей Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Filament
+# Filament assets
 RUN php artisan filament:assets --ansi
 
-# Storage link
-RUN php artisan storage:link
+# Копируем storage в public для прямого доступа (вместо storage:link)
+RUN rm -rf public/storage \
+    && cp -r storage/app/public public/storage
 
-# Генерация ключа
+# Генерация ключа Laravel
 RUN php artisan key:generate || true
 
 # Копируем entrypoint
@@ -40,5 +38,4 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 8000
 
-# Запуск через entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
