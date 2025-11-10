@@ -1,14 +1,16 @@
+# Dockerfile для Laravel 10 на PHP 8.3 CLI
 FROM php:8.3-cli
 
-# Установка зависимостей и PHP-расширений
+# Установка системных зависимостей и PHP-расширений
 RUN apt-get update && apt-get install -y \
-    unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libexif-dev curl \
+    unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev \
+    libicu-dev libexif-dev curl \
     && docker-php-ext-configure intl \
     && docker-php-ext-install zip pdo pdo_mysql mbstring bcmath exif intl \
     && docker-php-ext-enable exif intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Composer
+# Установка Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /app
@@ -16,22 +18,23 @@ WORKDIR /app
 # Копируем весь проект
 COPY . .
 
-# Права
-RUN chown -R www-data:www-data /app
+# Устанавливаем права на файлы и папки
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app
 
-# Установка зависимостей Laravel
+# Устанавливаем зависимости Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Filament assets
+# Сборка ассетов Filament
 RUN php artisan filament:assets --ansi
 
-# Копируем storage в public для прямого доступа вместо symlink
+# Копируем storage для прямого доступа через public/storage
 RUN rm -rf public/storage \
     && cp -r storage/app/public public/storage \
     && chown -R www-data:www-data public/storage \
     && chmod -R 755 public/storage
 
-# Генерация ключа Laravel
+# Генерация ключа Laravel (если не установлен)
 RUN php artisan key:generate || true
 
 # Копируем entrypoint
