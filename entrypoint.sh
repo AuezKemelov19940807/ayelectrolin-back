@@ -3,16 +3,16 @@ set -e
 
 echo "🔧 Подготовка окружения Laravel..."
 
-# Создаём папки storage
-mkdir -p /app/storage/app/public
-mkdir -p /app/storage/framework/{cache,sessions,views}
-mkdir -p /app/storage/logs
-chmod -R 775 /app/storage
-chown -R www-data:www-data /app/storage
+# # Создаём папки storage
+# mkdir -p /app/storage/app/public
+# mkdir -p /app/storage/framework/{cache,sessions,views}
+# mkdir -p /app/storage/logs
+# chmod -R 775 /app/storage
+# chown -R www-data:www-data /app/storage
 
-# Симлинк public/storage → storage/app/public
-rm -rf /app/public/storage
-ln -s /app/storage/app/public /app/public/storage
+# # Симлинк public/storage → storage/app/public
+# rm -rf /app/public/storage
+# ln -s /app/storage/app/public /app/public/storage
 
 # Кэшируем конфиги и маршруты
 php artisan config:cache
