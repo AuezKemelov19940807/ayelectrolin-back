@@ -15,24 +15,21 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /app
 
-# Копируем весь проект
+# Копируем проект
 COPY . .
 
-# Устанавливаем права на файлы и папки
-RUN chown -R www-data:www-data /app \
-    && chmod -R 755 /app
+# Права
+RUN chown -R www-data:www-data /app && chmod -R 755 /app
 
-# Устанавливаем зависимости Laravel
+# Установка зависимостей Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Сборка ассетов Filament
+# Сборка Filament ассетов
 RUN php artisan filament:assets --ansi
 
-# Копируем storage для прямого доступа через public/storage
-RUN rm -rf public/storage \
-    && cp -r storage/app/public public/storage \
-    && chown -R www-data:www-data public/storage \
-    && chmod -R 755 public/storage
+# ⚠️ НЕ копируем storage внутрь public, т.к. Railway volume его перезапишет
+# Вместо этого просто создаём симлинк, который Laravel ожидает
+RUN rm -rf public/storage && php artisan storage:link || true
 
 # Генерация ключа Laravel (если не установлен)
 RUN php artisan key:generate || true
