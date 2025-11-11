@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Filament\Admin\Resources\Contacts;
+
+use App\Filament\Admin\Resources\Contacts\Pages\CreateContact;
+use App\Filament\Admin\Resources\Contacts\Pages\EditContact;
+use App\Filament\Admin\Resources\Contacts\Pages\ListContacts;
+use App\Filament\Admin\Resources\Contacts\Schemas\ContactForm;
+use App\Filament\Admin\Resources\Contacts\Tables\ContactsTable;
+use App\Filament\Admin\Resources\Contacts\RelationManagers\SocialsRelationManager;
+use App\Models\Contact;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+
+class ContactResource extends Resource
+{
+    protected static ?string $model = Contact::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Контакты'; // ← Название в меню
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Контакты'; // ← Заголовок в списке
+    }
+
+    
+
+    public static function getLabel(): string
+    {
+        return 'Контакт'; // ← Название в форме (ед. число)
+    }
+
+
+    public static function form(Schema $schema): Schema
+    {
+        return ContactForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return ContactsTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            SocialsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListContacts::route('/'),
+            'create' => CreateContact::route('/create'),
+            'edit' => EditContact::route('/{record}/edit'),
+        ];
+    }
+}
