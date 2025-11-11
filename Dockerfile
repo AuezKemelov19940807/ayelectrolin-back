@@ -24,12 +24,11 @@ RUN chown -R www-data:www-data /app && chmod -R 755 /app
 # Установка зависимостей Laravel
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
-# Сборка Filament ассетов
-RUN php artisan filament:assets --ansi
+# Сборка Filament ассетов (если используется)
+RUN php artisan filament:assets --ansi || true
 
-# ⚠️ НЕ копируем storage внутрь public, т.к. Railway volume его перезапишет
-# Вместо этого просто создаём симлинк, который Laravel ожидает
-RUN rm -rf public/storage && php artisan storage:link || true
+# ⚠️ Не копируем storage внутрь public, Railway volume его перезапишет
+RUN rm -rf public/storage
 
 # Генерация ключа Laravel (если не установлен)
 RUN php artisan key:generate || true

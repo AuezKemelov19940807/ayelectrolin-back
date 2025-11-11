@@ -1,32 +1,29 @@
 #!/bin/sh
 set -e
 
-echo "Ждём базу и запускаем миграции..."
-php artisan migrate --force
+echo "🔧 Подготовка окружения Laravel..."
 
-echo "Создаём или обновляем администратора..."
-php artisan tinker --execute "\
-\$user = App\Models\User::firstOrNew(['email' => 'admin@railway.app']); \
-\$user->name = 'Railway Admin'; \
-\$user->is_admin = 1; \
-\$user->email_verified_at = now(); \
-\$user->password = bcrypt('admin123'); \
-\$user->save();"
+# Проверка/создание нужных папок в storage
+mkdir -p /app/storage/app/public
+mkdir -p /app/storage/framework/{cache,sessions,views}
+mkdir -p /app/storage/logs
+chmod -R 775 /app/storage
+chown -R www-data:www-data /app/storage
 
-echo "Очищаем кэш и готовим всё к работе..."
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
+# Симлинк public/storage → storage/app/public
+if [ ! -L /app/public/storage ]; then
+    echo "🔗 Создаём символическую ссылку public/storage..."
+    rm -rf /app/public/storage
+    ln -s /app/storage/app/public /app/public/storage
+fi
 
-echo "Принудительно задаём HTTPS, если X-Forwarded-Proto=https"
-php artisan tinker --execute "\
-if (request()->header('X-Forwarded-Proto') === 'https') { \
-    \Illuminate\Support\Facades\URL::forceScheme('https'); \
-    \Log::info('Force HTTPS: X-Forwarded-Proto detected'); \
-} else { \
-    \Log::info('Scheme detected: '.request()->getScheme()); \
-}"
+# Кэшируем конфиги и маршруты
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
-echo "Запускаем сервер Laravel..."
-php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+# Применяем миграции (если база доступна)
+php artisan migrate --force || true
+
+echo "🚀 Запуск Laravel..."
+exec php artisan serve --host=0.0.0.0 --port=8000
