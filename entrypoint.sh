@@ -1,31 +1,32 @@
 #!/bin/sh
 set -e
 
-echo "🔧 Подготовка Laravel с Google Cloud Storage..."
+echo "🔧 Подготовка окружения Laravel..."
 
-# Проверяем наличие переменных окружения
-if [ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
-  echo "❌ Ошибка: переменная GOOGLE_APPLICATION_CREDENTIALS не установлена!"
-  exit 1
+# Создаём нужные директории
+mkdir -p /app/storage/app/public
+mkdir -p /app/storage/framework/{cache,sessions,views}
+mkdir -p /app/storage/logs
+chmod -R 775 /app/storage
+chown -R www-data:www-data /app/storage
+
+# Символическая ссылка storage
+if [ ! -L /app/public/storage ]; then
+    echo "🔗 Создаём символическую ссылку public/storage..."
+    rm -rf /app/public/storage
+    ln -s /app/storage/app/public /app/public/storage
 fi
 
-if [ ! -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
-  echo "❌ Ошибка: файл ключа сервиса не найден по пути $GOOGLE_APPLICATION_CREDENTIALS"
-  exit 1
-fi
-
-echo "✅ Ключ сервиса найден: $GOOGLE_APPLICATION_CREDENTIALS"
-
-# Настройка Laravel
+# Очистка и кэширование
 php artisan config:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Генерация ключа (если не установлен)
-php artisan key:generate --force || true
+# Генерация ключа Laravel
+php artisan key:generate || true
 
-# Миграции
+# Применяем миграции
 php artisan migrate --force || true
 
 echo "🚀 Запуск Laravel..."
