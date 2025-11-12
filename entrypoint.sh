@@ -3,9 +3,11 @@ set -e
 
 echo "🔧 Подготовка окружения Laravel..."
 
-# Создаём папки storage, если их нет
+# ВОССТАНАВЛИВАЕМ storage после монтирования
 mkdir -p /app/storage/app/public
-mkdir -p /app/storage/framework/{cache,sessions,views}
+mkdir -p /app/storage/framework/cache
+mkdir -p /app/storage/framework/sessions
+mkdir -p /app/storage/framework/views
 mkdir -p /app/storage/logs
 chmod -R 775 /app/storage
 chown -R www-data:www-data /app/storage
@@ -17,10 +19,19 @@ if [ ! -L /app/public/storage ]; then
     ln -s /app/storage/app/public /app/public/storage
 fi
 
+# Проверим кеш путь (на всякий случай)
+if [ ! -d /app/storage/framework/views ]; then
+    mkdir -p /app/storage/framework/views
+fi
+
 # Кэшируем конфиги и маршруты
+php artisan config:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+
+# Генерация ключа Laravel
+php artisan key:generate || true
 
 # Применяем миграции (если база доступна)
 php artisan migrate --force || true
