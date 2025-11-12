@@ -9,10 +9,12 @@
         "php": "^8.2",
         "bitrix24/b24phpsdk": "^1.6",
         "filament/filament": "4.0",
+        "google/cloud-storage": "^1.48",
         "intervention/image": "^3.11",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.2",
         "laravel/tinker": "^2.10.1",
+        "league/flysystem-google-cloud-storage": "^3.30",
         "spatie/laravel-medialibrary": "^11.15"
     },
     "require-dev": {
