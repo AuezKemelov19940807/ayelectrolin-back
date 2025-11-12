@@ -12,6 +12,13 @@ mkdir -p /app/storage/logs
 chmod -R 775 /app/storage
 chown -R www-data:www-data /app/storage
 
+# Выводим содержимое volume для проверки
+echo "📂 Проверка содержимого volume..."
+ls -la /app/storage || true
+ls -la /app/storage/framework || true
+ls -la /app/storage/app/public || true
+echo "✅ Проверка volume завершена."
+
 # Симлинк public/storage → storage/app/public
 if [ ! -L /app/public/storage ]; then
     echo "🔗 Создаём символическую ссылку public/storage..."
@@ -24,7 +31,7 @@ if [ ! -d /app/storage/framework/views ]; then
     mkdir -p /app/storage/framework/views
 fi
 
-# Кэшируем конфиги и маршруты
+# Очистка и кэширование конфигов и маршрутов
 php artisan config:clear
 php artisan config:cache
 php artisan route:cache
