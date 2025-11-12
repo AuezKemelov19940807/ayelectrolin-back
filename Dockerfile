@@ -22,15 +22,9 @@ COPY . .
 # Права
 RUN chown -R www-data:www-data /app && chmod -R 755 /app
 
-# Установка зависимостей Laravel (все пакеты уже указаны в composer.json)
-RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
-
-# Сборка Filament ассетов (если используется)
-RUN php artisan filament:assets --ansi || true
-
-# Удаляем старый storage symlink и создаём заново
-RUN rm -rf public/storage || true \
- && php artisan storage:link || true
+# Установка зависимостей Laravel и GCS-драйвера
+RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction \
+ && composer require league/flysystem-google-cloud-storage --no-interaction --no-dev
 
 # Копируем entrypoint
 COPY entrypoint.sh /entrypoint.sh
@@ -39,5 +33,4 @@ RUN chmod +x /entrypoint.sh
 # Порт для Laravel
 EXPOSE 8000
 
-# Railway запускает ENTRYPOINT с переменной $PORT
 ENTRYPOINT ["/entrypoint.sh"]
