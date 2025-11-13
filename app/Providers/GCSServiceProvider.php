@@ -14,10 +14,21 @@ class GCSServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Storage::extend('gcs', function ($app, $config) {
-            $client = new StorageClient([
-                'projectId' => 'intense-context-471105-t9',
-                'keyFilePath' => 'storage/app/google-cloud.json',
-            ]);
+            $credentials = env('GOOGLE_CREDENTIALS');
+
+            if ($credentials) {
+                // В продакшне берём ключ из ENV
+                $client = new StorageClient([
+                    'projectId' => 'intense-context-471105-t9',
+                    'keyFile' => json_decode($credentials, true),
+                ]);
+            } else {
+                // Локально используем файл (если есть)
+                $client = new StorageClient([
+                    'projectId' => 'intense-context-471105-t9',
+                    'keyFilePath' => storage_path('app/google-cloud.json'),
+                ]);
+            }
 
             $bucket = $client->bucket('ayelectrolin-storage');
 
