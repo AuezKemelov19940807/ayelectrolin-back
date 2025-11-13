@@ -59,15 +59,15 @@ return [
             'report' => false,
         ],
 
-        'gcs' => [
-                 'driver' => 'gcs',
-                 'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'intense-context-471105-t9'),
-                 'key_file' => storage_path('app/google-cloud.json'), // сюда ты положишь JSON с ключом
-                 'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'ayelectrolin-storage'),
-                 'path_prefix' => null, // можно указать подкаталог (например, 'public/')
-                 'api_url' => 'https://storage.googleapis.com', // URL для доступа
-                  'visibility' => 'public',
-              ],
+'gcs' => [
+    'driver' => 'gcs',
+    'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+    'key_file' => env('GOOGLE_CLOUD_KEY_FILE', null),
+    'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+    'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null),
+    'api_url' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
+    'visibility' => 'public',
+],
 
     ], 
 
