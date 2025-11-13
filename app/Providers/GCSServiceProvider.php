@@ -17,20 +17,19 @@ class GCSServiceProvider extends ServiceProvider
             $credentials = env('GOOGLE_CREDENTIALS');
 
             if ($credentials) {
-                // В продакшне берём ключ из ENV
                 $client = new StorageClient([
                     'projectId' => 'intense-context-471105-t9',
                     'keyFile' => json_decode($credentials, true),
                 ]);
             } else {
-                // Локально используем файл (если есть)
                 $client = new StorageClient([
                     'projectId' => 'intense-context-471105-t9',
                     'keyFilePath' => storage_path('app/google-cloud.json'),
                 ]);
             }
 
-            $bucket = $client->bucket('ayelectrolin-storage');
+            $bucketName = 'ayelectrolin-storage';
+            $bucket = $client->bucket($bucketName);
 
             // Flysystem 3 adapter
             $adapter = new GoogleCloudStorageAdapter($bucket);
@@ -38,8 +37,15 @@ class GCSServiceProvider extends ServiceProvider
             // Flysystem 3 FilesystemOperator
             $filesystem = new Filesystem($adapter);
 
-            // Laravel adapter
-            return new LaravelFilesystemAdapter($filesystem, $adapter, $config);
+            // Создаём кастомный Laravel adapter с поддержкой URL
+            $adapterInstance = new LaravelFilesystemAdapter($filesystem, $adapter, $config);
+
+            // Добавляем метод url() вручную
+            $adapterInstance->urlResolver = function ($path) use ($bucketName) {
+                return "https://storage.googleapis.com/{$bucketName}/{$path}";
+            };
+
+            return $adapterInstance;
         });
     }
 }
