@@ -16,7 +16,7 @@ class GCSServiceProvider extends ServiceProvider
         Storage::extend('gcs', function ($app, $config) {
             $client = new StorageClient([
                 'projectId' => 'intense-context-471105-t9',
-                'keyFilePath' => 'D:/fullStack/laravel+vue+filament/aiElectroLin/back/ayelectrolin/storage/app/credentials/google-cloud.json',
+                'keyFilePath' => 'storage/app/google-cloud.json',
             ]);
 
             $bucket = $client->bucket('ayelectrolin-storage');
