@@ -1,28 +1,51 @@
+# -----------------------------
+# Базовый образ
+# -----------------------------
 FROM php:8.3-cli
 
+# -----------------------------
+# Устанавливаем зависимости PHP
+# -----------------------------
 RUN apt-get update && apt-get install -y \
-    unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev \
-    libicu-dev libexif-dev curl \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install zip pdo pdo_mysql mbstring bcmath exif intl gd \
-    && docker-php-ext-enable exif intl gd \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    unzip git libzip-dev libxml2-dev libonig-dev curl \
+    libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
+    && docker-php-ext-install zip pdo pdo_mysql gd
 
+# -----------------------------
+# Устанавливаем Composer
+# -----------------------------
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /app
+# -----------------------------
+# Копируем проект
+# -----------------------------
+WORKDIR /var/www/html
 COPY . .
 
-RUN chown -R www-data:www-data /app && chmod -R 755 /app
-
-# Отключаем доступ к metadata server
+# -----------------------------
+# Отключаем обращение к GCP metadata
+# -----------------------------
 ENV GOOGLE_CLOUD_DISABLE_METADATA=true
 
-RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
+# -----------------------------
+# Устанавливаем зависимости без dev и без скриптов, чтобы избежать ошибок GCS
+# -----------------------------
+RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-scripts
 
+# -----------------------------
+# Копируем entrypoint и даем права
+# -----------------------------
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-EXPOSE 8000
+# -----------------------------
+# Настройка рабочей директории
+# -----------------------------
+RUN php artisan storage:link || true
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# -----------------------------
+# Старт контейнера
+# -----------------------------
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php-fpm"]
