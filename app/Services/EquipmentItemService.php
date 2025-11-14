@@ -28,8 +28,9 @@ class EquipmentItemService
             return [
                 'id' => $item->id,
                 'title' => $item->{"title_{$lang}"} ?? '',
-                'image' => $item->image ? Storage::url($item->image) : null,
-                'largeImage' => $item->large_image ? Storage::url($item->large_image) : null,
+                'image' => $item->image ? "https://storage.googleapis.com/ayelectrolin-storage/public/{$item->image}" : null,
+                // 'image' => $item->image ? Storage::url($item->image) : null,
+                // 'largeImage' => $item->large_image ? Storage::url($item->large_image) : null,
             ];
         })->toArray();
     }

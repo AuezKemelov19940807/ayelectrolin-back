@@ -50,7 +50,7 @@ class SeoService
             'og_title' => $seo->{"og_title_{$lang}"} ?? '',
             'description' => $seo->{"description_{$lang}"} ?? '',
             'og_description' => $seo->{"og_description_{$lang}"} ?? '',
-            'og_image' => $seo->og_image ? Storage::url($seo->og_image) : null,
+            // 'og_image' => $seo->og_image ? Storage::url($seo->og_image) : null,
             'twitter_card' => $seo->twitter_card ?? '',
         ];
     }

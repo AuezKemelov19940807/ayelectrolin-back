@@ -64,9 +64,12 @@ return [
     'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
     'key_file' => env('GOOGLE_CLOUD_KEY_FILE', null),
     'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
-    'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null),
+    'path_prefix' => null, 
     'api_url' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
     'visibility' => 'public',
+    // 'options' => [
+    // 'predefinedAcl' => 'publicRead',
+
 ],
 
     ], 

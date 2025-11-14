@@ -77,15 +77,15 @@ class MainController extends Controller
 
         return response()->json([
             'banner' => $banner,
-            'equipment' => $equipment,
-            'priority' => $priority,
-            'guarantee' => $guarantee,
-            'brand' => $brand,
-            'review' => $review,
-            'company' => $company,
-            'project' => $project,
-            'consultation' => $consultation,
-            'seo' => $seo,
+            // 'equipment' => $equipment,
+            // 'priority' => $priority,
+            // 'guarantee' => $guarantee,
+            // 'brand' => $brand,
+            // 'review' => $review,
+            // 'company' => $company,
+            // 'project' => $project,
+            // 'consultation' => $consultation,
+            // 'seo' => $seo,
         ]);
     }
 }

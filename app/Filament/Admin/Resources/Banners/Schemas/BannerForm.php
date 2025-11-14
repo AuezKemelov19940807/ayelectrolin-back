@@ -67,12 +67,15 @@ class BannerForm
                     ->visible(fn ($get) => $get('language') === 'kk')
                     ->columnSpan('full'),
 
-                FileUpload::make('image')->label('Image')
-                    ->image()
-                    ->disk('public')
-                    ->directory('banners')
-
-                    ->columnSpan('full'),
+              FileUpload::make('image')
+                           
+                           ->disk('public')
+                             ->directory('tmp')
+                        //    ->directory('banners')
+                           ->visibility('public')
+                           ->preserveFilenames(false)   // Filament сам создаёт уникальное имя
+                           ->nullable()
+                            ->columnSpan('full')
             ]);
     }
 }
