@@ -1,6 +1,6 @@
 FROM php:8.3-fpm
 
-# ==== Системные зависимости ====
+# ==== Системные зависимости и PHP-расширения ====
 RUN apt-get update && apt-get install -y \
     unzip git libzip-dev libxml2-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev \
     libicu-dev libexif-dev curl \
@@ -14,20 +14,25 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin --filename=composer
 
+# ==== Рабочая директория ====
 WORKDIR /app
 
-# Копируем проект
+# ==== Копируем проект ====
 COPY . .
 
-# Права
-RUN chown -R www-data:www-data /app && chmod -R 755 /app
+# ==== Права для Laravel ====
+RUN chown -R www-data:www-data /app \
+    && chmod -R 755 /app
 
-# Устанавливаем зависимости PHP (важно: БЕЗ скриптов)
+# ==== Устанавливаем зависимости PHP (без скриптов) ====
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --no-scripts
 
-# ==== Точка входа ====
+# ==== Копируем entrypoint ====
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# ==== Порт для Laravel ====
+EXPOSE 8000
+
+# ==== Entrypoint ====
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php-fpm"]
