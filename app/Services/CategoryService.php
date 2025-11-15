@@ -61,7 +61,7 @@ class CategoryService
         if (! $category) return null;
 
         return [
-            'id' => $category->id,
+              'id' => $category->id,
             'title' => $category->{"category_{$lang}"} ?? '',
             'slug' => $category->slug,
             'items' => $category->items->map(function ($item) use ($lang) {

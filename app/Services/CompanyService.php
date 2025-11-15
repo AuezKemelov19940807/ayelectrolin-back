@@ -41,7 +41,7 @@ class CompanyService
             'id' => $company->id,
             'title' => $company->{"title_{$lang}"} ?? '',
             'description' => $company->{"description_{$lang}"} ?? '',
-            // 'image' => $company->image ? Storage::url($company->image) : null,
+            'image' => $company->image ? Storage::url($company->image) : null,
         ];
     }
 

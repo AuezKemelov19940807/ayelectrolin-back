@@ -18,7 +18,11 @@ class EquipmentResource extends Resource
 {
     protected static ?string $model = Equipment::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Оборудование';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCpuChip;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -34,9 +38,7 @@ class EquipmentResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

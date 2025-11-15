@@ -19,7 +19,11 @@ class ReviewResource extends Resource
 {
     protected static ?string $model = Review::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Отзывы клиентов';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -36,7 +40,7 @@ class ReviewResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ItemsRelationManager::class, // 👈 добав
+            ItemsRelationManager::class,
         ];
     }
 

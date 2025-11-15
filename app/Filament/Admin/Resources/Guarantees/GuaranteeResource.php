@@ -20,7 +20,11 @@ class GuaranteeResource extends Resource
 {
     protected static ?string $model = Guarantee::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Гарантии';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -37,7 +41,7 @@ class GuaranteeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            BlocksRelationManager::class, // 👈 добавляем сюда
+            BlocksRelationManager::class,
             SwipersRelationManager::class,
         ];
     }

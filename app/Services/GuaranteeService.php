@@ -41,7 +41,7 @@ class GuaranteeService
 
             'swipers' => $guarantee->swipers->map(fn ($swiper) => [
                 'id' => $swiper->id,
-                // 'image' => $swiper->image ? Storage::url($swiper->image) : null,
+                'image' => $swiper->image ? Storage::url($swiper->image) : null,
             ]),
         ];
     }

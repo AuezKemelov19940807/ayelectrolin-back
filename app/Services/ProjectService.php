@@ -47,13 +47,13 @@ class ProjectService
             'id' => $project->id,
             'title' => $project->{"title_{$lang}"} ?? '',
             'subtitle' => $project->{"subtitle_{$lang}"} ?? '',
-            // 'image_1' => $project->image_1 ? Storage::url($project->image_1) : null,
-            // 'image_2' => $project->image_2 ? Storage::url($project->image_2) : null,
-            // 'image_3' => $project->image_3 ? Storage::url($project->image_3) : null,
-            // 'image_4' => $project->image_4 ? Storage::url($project->image_4) : null,
-            // 'image_5' => $project->image_5 ? Storage::url($project->image_5) : null,
-            // 'image_6' => $project->image_6 ? Storage::url($project->image_6) : null,
-            // 'image_7' => $project->image_7 ? Storage::url($project->image_7) : null,
+            'image_1' => $project->image_1 ? Storage::url($project->image_1) : null,
+            'image_2' => $project->image_2 ? Storage::url($project->image_2) : null,
+            'image_3' => $project->image_3 ? Storage::url($project->image_3) : null,
+            'image_4' => $project->image_4 ? Storage::url($project->image_4) : null,
+            'image_5' => $project->image_5 ? Storage::url($project->image_5) : null,
+            'image_6' => $project->image_6 ? Storage::url($project->image_6) : null,
+            'image_7' => $project->image_7 ? Storage::url($project->image_7) : null,
         ];
     }
 

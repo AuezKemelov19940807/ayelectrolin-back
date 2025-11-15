@@ -18,7 +18,11 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Наши проекты';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -34,9 +38,7 @@ class ProjectResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

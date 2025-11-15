@@ -5,11 +5,10 @@ namespace App\Filament\Admin\Resources\Catalogs;
 use App\Filament\Admin\Resources\Catalogs\Pages\CreateCatalog;
 use App\Filament\Admin\Resources\Catalogs\Pages\EditCatalog;
 use App\Filament\Admin\Resources\Catalogs\Pages\ListCatalogs;
+use App\Filament\Admin\Resources\Catalogs\RelationManagers\CategoriesRelationManager;
+use App\Filament\Admin\Resources\Catalogs\RelationManagers\SeoRelationManager;
 use App\Filament\Admin\Resources\Catalogs\Schemas\CatalogForm;
 use App\Filament\Admin\Resources\Catalogs\Tables\CatalogsTable;
-use App\Filament\Admin\Resources\Catalogs\RelationManagers\CategoriesRelationManager;
-use App\Filament\Admin\Resources\Catalogs\RelationManagers\ItemsRelationManager;
-use App\Filament\Admin\Resources\Catalogs\RelationManagers\SeoRelationManager;
 use App\Models\Catalog;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -21,7 +20,11 @@ class CatalogResource extends Resource
 {
     protected static ?string $model = Catalog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Элементы Каталога';
+
+    // Иконка для меню
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     protected static ?string $recordTitleAttribute = 'title';
 

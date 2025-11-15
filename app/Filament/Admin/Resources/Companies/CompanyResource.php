@@ -18,7 +18,11 @@ class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Компании';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -34,9 +38,7 @@ class CompanyResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

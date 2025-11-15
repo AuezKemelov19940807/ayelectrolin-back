@@ -19,7 +19,11 @@ class PriorityResource extends Resource
 {
     protected static ?string $model = Priority::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Наши приоритеты';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -36,7 +40,7 @@ class PriorityResource extends Resource
     public static function getRelations(): array
     {
         return [
-            BlocksRelationManager::class, // <-- здесь подключаем RelationManager
+            BlocksRelationManager::class,
         ];
     }
 

@@ -19,7 +19,11 @@ class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в навигации
+    protected static ?string $navigationLabel = 'Бренды';
+
+    // Иконка в меню
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
     protected static ?string $recordTitleAttribute = 'title';
 

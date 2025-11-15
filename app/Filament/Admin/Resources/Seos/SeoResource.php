@@ -18,7 +18,11 @@ class SeoResource extends Resource
 {
     protected static ?string $model = Seo::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'SEO настройки';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -34,9 +38,7 @@ class SeoResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

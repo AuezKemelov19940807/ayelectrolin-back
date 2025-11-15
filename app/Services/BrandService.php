@@ -39,7 +39,7 @@ class BrandService
             'title' => $brand->{"title_{$lang}"} ?? '',
             'items' => $brand->items->map(fn ($item) => [
                 'id' => $item->id,
-                // 'image' => $item->image ? Storage::url($item->image) : null,
+                'image' => $item->image ? Storage::url($item->image) : null,
             ]),
         ];
     }

@@ -68,14 +68,10 @@ class BannerForm
                     ->columnSpan('full'),
 
               FileUpload::make('image')
-                           
-                           ->disk('public')
-                             ->directory('tmp')
-                        //    ->directory('banners')
-                           ->visibility('public')
-                           ->preserveFilenames(false)   // Filament сам создаёт уникальное имя
-                           ->nullable()
-                            ->columnSpan('full')
+                    ->image()
+                    ->disk('public')
+                    ->directory('banners')
+                    ->columnSpan('full'),
             ]);
     }
 }

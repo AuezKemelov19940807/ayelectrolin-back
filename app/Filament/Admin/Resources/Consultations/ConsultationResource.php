@@ -18,7 +18,11 @@ class ConsultationResource extends Resource
 {
     protected static ?string $model = Consultation::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в боковом меню
+    protected static ?string $navigationLabel = 'Консультации';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -34,9 +38,7 @@ class ConsultationResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

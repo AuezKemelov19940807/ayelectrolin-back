@@ -47,7 +47,7 @@ class PriorityService
                     'id' => $block->id,
                     'title' => $block->{"title_{$lang}"} ?? '',
                     'description' => $block->{"description_{$lang}"} ?? '',
-                    // 'icon' => $block->icon ? Storage::url($block->icon) : null,
+                    'icon' => $block->icon ? Storage::url($block->icon) : null,
                 ];
             }),
         ];

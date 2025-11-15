@@ -15,9 +15,6 @@ class BannerService
         return in_array($lang, $this->allowedLangs) ? $lang : 'ru';
     }
 
-    /**
-     * Получение баннера с корректным публичным URL изображения
-     */
     public function getBanner(string $lang): array
     {
         $lang = $this->normalizeLang($lang);
@@ -44,15 +41,10 @@ class BannerService
             'title' => $banner->{"title_{$lang}"} ?? '',
             'subtitle' => $banner->{"subtitle_{$lang}"} ?? '',
             'btnText' => $banner->{"btnText_{$lang}"} ?? '',
-            'image' => $banner->image 
-                ? "https://storage.googleapis.com/".env('GOOGLE_CLOUD_STORAGE_BUCKET')."ayelectrolin-storage/{$banner->image}"
-                : null,
+            'image' => $banner->image ? Storage::url($banner->image) : null,
         ];
     }
 
-    /**
-     * Обновление баннера и загрузка изображения в GCS
-     */
     public function updateBanner(string $lang, array $data, Request $request): array
     {
         $lang = $this->normalizeLang($lang);
@@ -65,28 +57,17 @@ class BannerService
             'image' => null,
         ]);
 
-        // Обновляем тексты
         $banner->update([
             "title_{$lang}" => $data['title'] ?? $banner->{"title_{$lang}"},
             "subtitle_{$lang}" => $data['subtitle'] ?? $banner->{"subtitle_{$lang}"},
             "btnText_{$lang}" => $data['btnText'] ?? $banner->{"btnText_{$lang}"},
         ]);
 
-        // Если передан файл через админку, загружаем в GCS
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            // Путь в бакете, например: banners/имя_файла.webp
-            $path = Storage::disk('gcs')->putFile('banners', $file, 'public');
-            $banner->update(['image' => $path]);
-        }
-
         return [
             'title' => $banner->{"title_{$lang}"},
             'subtitle' => $banner->{"subtitle_{$lang}"},
             'btnText' => $banner->{"btnText_{$lang}"},
-            'image' => $banner->image 
-                ? "https://storage.googleapis.com/".env('GOOGLE_CLOUD_STORAGE_BUCKET')."ayelectrolin-storage/{$banner->image}"
-                : null,
+            'image' => $banner->image ? Storage::url($banner->image) : null,
         ];
     }
 }

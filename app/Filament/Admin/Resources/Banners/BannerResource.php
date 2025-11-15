@@ -18,7 +18,11 @@ class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // Название в навигации
+    protected static ?string $navigationLabel = 'Баннеры';
+
+    // Иконка
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 
     public static function form(Schema $schema): Schema
     {
@@ -32,9 +36,7 @@ class BannerResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
