@@ -21,6 +21,8 @@ class EquipmentResource extends Resource
     // Название в боковом меню
     protected static ?string $navigationLabel = 'Оборудование';
 
+    protected static ?int $navigationSort = 3;
+
     // Иконка
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCpuChip;
 
@@ -39,6 +41,21 @@ class EquipmentResource extends Resource
     public static function getRelations(): array
     {
         return [];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Оборудование';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Оборудование';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Оборудование блока';
     }
 
     public static function getPages(): array

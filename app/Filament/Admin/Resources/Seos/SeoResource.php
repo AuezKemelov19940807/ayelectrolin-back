@@ -26,6 +26,8 @@ class SeoResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 16;
+
     public static function form(Schema $schema): Schema
     {
         return SeoForm::configure($schema);
@@ -39,6 +41,21 @@ class SeoResource extends Resource
     public static function getRelations(): array
     {
         return [];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Блок SEO настройки';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'SEO настройки';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'SEO настройки';
     }
 
     public static function getPages(): array

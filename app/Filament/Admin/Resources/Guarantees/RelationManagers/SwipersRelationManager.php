@@ -37,7 +37,9 @@ class SwipersRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('image')
                     ->label('Изображение')
-                    ->square(),
+                    ->disk('public')       // если файлы лежат в storage/app/public
+                    ->square(true)  // убираем квадрат
+                    ->size(50),
             ])
             ->headerActions([
                 CreateAction::make()->label('Добавить слайд'),

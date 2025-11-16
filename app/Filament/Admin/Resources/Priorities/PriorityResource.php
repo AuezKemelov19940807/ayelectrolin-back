@@ -27,6 +27,8 @@ class PriorityResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 5;
+
     public static function form(Schema $schema): Schema
     {
         return PriorityForm::configure($schema);
@@ -42,6 +44,21 @@ class PriorityResource extends Resource
         return [
             BlocksRelationManager::class,
         ];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Блок Наши приоритеты';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Наши приоритеты';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Наши приоритеты';
     }
 
     public static function getPages(): array

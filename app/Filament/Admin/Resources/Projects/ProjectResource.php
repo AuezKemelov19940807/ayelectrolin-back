@@ -26,6 +26,8 @@ class ProjectResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 10;
+
     public static function form(Schema $schema): Schema
     {
         return ProjectForm::configure($schema);
@@ -39,6 +41,21 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Блок Наши проекты';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Наши проекты';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Наши проекты';
     }
 
     public static function getPages(): array

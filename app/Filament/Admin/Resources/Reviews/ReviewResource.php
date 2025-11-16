@@ -27,6 +27,8 @@ class ReviewResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 8;
+
     public static function form(Schema $schema): Schema
     {
         return ReviewForm::configure($schema);
@@ -42,6 +44,21 @@ class ReviewResource extends Resource
         return [
             ItemsRelationManager::class,
         ];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Блок Отзывы клиентов';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Отзывы клиентов';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Отзывы клиентов';
     }
 
     public static function getPages(): array

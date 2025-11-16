@@ -14,6 +14,7 @@ class ProjectForm
         return $schema
             ->components([
                 ToggleButtons::make('language')
+                    ->label('Язык')
                     ->options([
                         'ru' => 'RU',
                         'kk' => 'KK',

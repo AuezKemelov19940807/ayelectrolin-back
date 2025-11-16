@@ -26,6 +26,8 @@ class FooterResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 15;
+
     public static function form(Schema $schema): Schema
     {
         return FooterForm::configure($schema);
@@ -39,6 +41,21 @@ class FooterResource extends Resource
     public static function getRelations(): array
     {
         return [];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Футер сайта';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Футер';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Футер';
     }
 
     public static function getPages(): array

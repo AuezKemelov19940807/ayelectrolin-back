@@ -28,6 +28,8 @@ class CatalogResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 13;
+
     public static function form(Schema $schema): Schema
     {
         return CatalogForm::configure($schema);

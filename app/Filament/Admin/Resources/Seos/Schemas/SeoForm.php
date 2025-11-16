@@ -4,8 +4,8 @@ namespace App\Filament\Admin\Resources\Seos\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Schema;
 
@@ -17,6 +17,7 @@ class SeoForm
             ->components([
                 // Переключатель языка
                 ToggleButtons::make('language')
+                    ->label('Язык')
                     ->options([
                         'ru' => 'RU',
                         'kk' => 'KK',

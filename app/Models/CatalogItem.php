@@ -25,6 +25,11 @@ class CatalogItem extends Model
         'technical_specs_en' => 'array',
     ];
 
+    protected static function booted()
+    {
+        static::observe(\App\Observers\ImageToWebpObserver::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);

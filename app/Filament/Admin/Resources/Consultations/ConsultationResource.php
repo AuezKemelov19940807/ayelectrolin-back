@@ -26,6 +26,8 @@ class ConsultationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 11;
+
     public static function form(Schema $schema): Schema
     {
         return ConsultationForm::configure($schema);

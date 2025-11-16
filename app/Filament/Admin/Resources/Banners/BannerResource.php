@@ -21,6 +21,8 @@ class BannerResource extends Resource
     // Название в навигации
     protected static ?string $navigationLabel = 'Баннеры';
 
+    protected static ?int $navigationSort = 2;
+
     // Иконка
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 

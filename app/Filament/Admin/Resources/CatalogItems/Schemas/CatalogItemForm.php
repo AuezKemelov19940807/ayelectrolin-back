@@ -66,7 +66,7 @@ class CatalogItemForm
             Textarea::make('description_en')->label('Описание (EN)')->visible(fn ($get) => $get('language') === 'en')->columnSpanFull(),
 
             FileUpload::make('images')
-                ->label('Изображения asd')
+                ->label('Изображения')
                 ->multiple()
                 ->reorderable()
                 ->image()

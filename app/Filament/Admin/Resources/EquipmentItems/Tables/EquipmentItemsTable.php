@@ -25,8 +25,14 @@ class EquipmentItemsTable
                     ->searchable(),
                 TextColumn::make('title_en')
                     ->searchable(),
-                ImageColumn::make('image'),
-                ImageColumn::make('large_image'),
+                ImageColumn::make('image')
+                    ->disk('public')       // если файлы лежат в storage/app/public
+                    ->square(true)  // убираем квадрат
+                    ->size(50),
+                ImageColumn::make('large_image')
+                    ->disk('public')       // если файлы лежат в storage/app/public
+                    ->square(true)  // убираем квадрат
+                    ->size(50),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

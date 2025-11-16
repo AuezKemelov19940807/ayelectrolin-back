@@ -23,6 +23,8 @@ class GuaranteeResource extends Resource
     // Название в боковом меню
     protected static ?string $navigationLabel = 'Гарантии';
 
+    protected static ?int $navigationSort = 6;
+
     // Иконка
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
@@ -44,6 +46,21 @@ class GuaranteeResource extends Resource
             BlocksRelationManager::class,
             SwipersRelationManager::class,
         ];
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Гарантии';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Гарантия блока';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Гарантия блока';
     }
 
     public static function getPages(): array

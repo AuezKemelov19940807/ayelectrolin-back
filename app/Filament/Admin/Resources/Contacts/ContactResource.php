@@ -5,9 +5,9 @@ namespace App\Filament\Admin\Resources\Contacts;
 use App\Filament\Admin\Resources\Contacts\Pages\CreateContact;
 use App\Filament\Admin\Resources\Contacts\Pages\EditContact;
 use App\Filament\Admin\Resources\Contacts\Pages\ListContacts;
+use App\Filament\Admin\Resources\Contacts\RelationManagers\SocialsRelationManager;
 use App\Filament\Admin\Resources\Contacts\Schemas\ContactForm;
 use App\Filament\Admin\Resources\Contacts\Tables\ContactsTable;
-use App\Filament\Admin\Resources\Contacts\RelationManagers\SocialsRelationManager;
 use App\Models\Contact;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -23,6 +23,7 @@ class ContactResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?int $navigationSort = 14;
 
     public static function getNavigationLabel(): string
     {
@@ -34,13 +35,10 @@ class ContactResource extends Resource
         return 'Контакты'; // ← Заголовок в списке
     }
 
-    
-
     public static function getLabel(): string
     {
         return 'Контакт'; // ← Название в форме (ед. число)
     }
-
 
     public static function form(Schema $schema): Schema
     {

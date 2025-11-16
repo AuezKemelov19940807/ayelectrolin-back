@@ -16,7 +16,6 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class SeoRelationManager extends RelationManager
 {
@@ -48,62 +47,62 @@ class SeoRelationManager extends RelationManager
             // Title
             TextInput::make('title_ru')
                 ->label('Title (RU)')
-                ->visible(fn($get) => $get('language') === 'ru')
-                ->required(fn($get) => $get('language') === 'ru'),
+                ->visible(fn ($get) => $get('language') === 'ru')
+                ->required(fn ($get) => $get('language') === 'ru'),
 
             TextInput::make('title_kk')
                 ->label('Title (KK)')
-                ->visible(fn($get) => $get('language') === 'kk')
-                ->required(fn($get) => $get('language') === 'kk'),
+                ->visible(fn ($get) => $get('language') === 'kk')
+                ->required(fn ($get) => $get('language') === 'kk'),
 
             TextInput::make('title_en')
                 ->label('Title (EN)')
-                ->visible(fn($get) => $get('language') === 'en')
-                ->required(fn($get) => $get('language') === 'en'),
+                ->visible(fn ($get) => $get('language') === 'en')
+                ->required(fn ($get) => $get('language') === 'en'),
 
             // Description
             Textarea::make('description_ru')
                 ->label('Description (RU)')
-                ->visible(fn($get) => $get('language') === 'ru')
+                ->visible(fn ($get) => $get('language') === 'ru')
                 ->columnSpanFull(),
 
             Textarea::make('description_kk')
                 ->label('Description (KK)')
-                ->visible(fn($get) => $get('language') === 'kk')
+                ->visible(fn ($get) => $get('language') === 'kk')
                 ->columnSpanFull(),
 
             Textarea::make('description_en')
                 ->label('Description (EN)')
-                ->visible(fn($get) => $get('language') === 'en')
+                ->visible(fn ($get) => $get('language') === 'en')
                 ->columnSpanFull(),
 
             // Open Graph Title
             TextInput::make('og_title_ru')
                 ->label('OG Title (RU)')
-                ->visible(fn($get) => $get('language') === 'ru'),
+                ->visible(fn ($get) => $get('language') === 'ru'),
 
             TextInput::make('og_title_kk')
                 ->label('OG Title (KK)')
-                ->visible(fn($get) => $get('language') === 'kk'),
+                ->visible(fn ($get) => $get('language') === 'kk'),
 
             TextInput::make('og_title_en')
                 ->label('OG Title (EN)')
-                ->visible(fn($get) => $get('language') === 'en'),
+                ->visible(fn ($get) => $get('language') === 'en'),
 
             // Open Graph Description
             Textarea::make('og_description_ru')
                 ->label('OG Description (RU)')
-                ->visible(fn($get) => $get('language') === 'ru')
+                ->visible(fn ($get) => $get('language') === 'ru')
                 ->columnSpanFull(),
 
             Textarea::make('og_description_kk')
                 ->label('OG Description (KK)')
-                ->visible(fn($get) => $get('language') === 'kk')
+                ->visible(fn ($get) => $get('language') === 'kk')
                 ->columnSpanFull(),
 
             Textarea::make('og_description_en')
                 ->label('OG Description (EN)')
-                ->visible(fn($get) => $get('language') === 'en')
+                ->visible(fn ($get) => $get('language') === 'en')
                 ->columnSpanFull(),
 
             // Open Graph Image
@@ -134,10 +133,10 @@ class SeoRelationManager extends RelationManager
             ])
             ->headerActions([
                 // CreateAction::make()
-                    // ->mutateFormDataUsing(function (array $data, $livewire) {
-                    //     $data['catalog_id'] = $livewire->ownerRecord->id ?? null;
-                    //     return $data;
-                    // }),
+                // ->mutateFormDataUsing(function (array $data, $livewire) {
+                //     $data['catalog_id'] = $livewire->ownerRecord->id ?? null;
+                //     return $data;
+                // }),
             ])
             ->recordActions([
                 EditAction::make(),
