@@ -41,6 +41,21 @@ class CompanyResource extends Resource
         return [];
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Компании';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Компания';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Компания';
+    }
+
     public static function getPages(): array
     {
         return [

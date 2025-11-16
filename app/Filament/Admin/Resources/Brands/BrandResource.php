@@ -44,6 +44,21 @@ class BrandResource extends Resource
         ];
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Бренды';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Бренд';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Бренд';
+    }
+
     public static function getPages(): array
     {
         return [

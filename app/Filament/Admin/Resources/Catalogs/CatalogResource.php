@@ -46,6 +46,21 @@ class CatalogResource extends Resource
         ];
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Элементы Каталога';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Элементы Каталога';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Элемент Каталога';
+    }
+
     public static function getPages(): array
     {
         return [

@@ -39,6 +39,21 @@ class BannerResource extends Resource
         return [];
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Баннеры';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Баннеры';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Баннер';
+    }
+
     public static function getPages(): array
     {
         return [

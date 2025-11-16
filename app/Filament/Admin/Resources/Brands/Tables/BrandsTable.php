@@ -13,7 +13,6 @@ class BrandsTable
     {
         return $table
             ->columns([
-                //
             ])
             ->filters([
                 //

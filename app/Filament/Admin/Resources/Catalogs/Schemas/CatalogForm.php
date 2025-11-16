@@ -14,6 +14,7 @@ class CatalogForm
             ->components([
                 // Переключатель языка
                 ToggleButtons::make('language')
+                    ->label('Язык')
                     ->options([
                         'ru' => 'RU',
                         'kk' => 'KK',
@@ -53,5 +54,4 @@ class CatalogForm
                     ->columnSpan('full'),
             ]);
     }
-
 }

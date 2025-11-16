@@ -49,6 +49,21 @@ class CatalogItemResource extends Resource
         static::observe(\App\Observers\ImageToWebpObserver::class);
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Каталог товаров';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Каталог товаров';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Каталог товаров';
+    }
+
     public static function getPages(): array
     {
         return [

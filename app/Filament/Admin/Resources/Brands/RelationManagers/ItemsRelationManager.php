@@ -35,9 +35,15 @@ class ItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                ImageColumn::make('image')
+                ImageColumn::make('image')  // Поле с картинкой
                     ->label('Изображение')
-                    ->square(),
+                    ->disk('public')       // если файлы лежат в storage/app/public
+                    ->square(false)  // убираем квадрат
+
+                    ->extraImgAttributes([
+                        'class' => 'object-cover w-[30%] h-full', // object-cover
+                    ]),
+
             ])
             ->headerActions([
                 CreateAction::make()->label('Добавить изображение'),

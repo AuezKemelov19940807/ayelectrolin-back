@@ -41,6 +41,21 @@ class EquipmentItemResource extends Resource
         return [];
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Оборудование — элементы';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Оборудование — элементы';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Оборудование — элементы';
+    }
+
     public static function getPages(): array
     {
         return [

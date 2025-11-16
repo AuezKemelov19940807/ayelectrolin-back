@@ -41,6 +41,21 @@ class ConsultationResource extends Resource
         return [];
     }
 
+    public static function getBreadcrumb(): string
+    {
+        return 'Консультации';
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return 'Консультации';
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Консультация';
+    }
+
     public static function getPages(): array
     {
         return [

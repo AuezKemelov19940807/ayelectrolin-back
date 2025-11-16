@@ -17,6 +17,9 @@ class ListBrands extends ListRecords
         ];
     }
 
+    // убираем static
+    protected string $view = 'filament.redirect-banner';
+
     public function mount(): void
     {
         // Редирект сразу на страницу редактирования баннера с ID = 2

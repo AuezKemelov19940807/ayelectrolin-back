@@ -20,6 +20,8 @@ class SocialsRelationManager extends RelationManager
 {
     protected static string $relationship = 'socials';
 
+    protected static ?string $title = 'Социальные сети';
+
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -65,7 +67,7 @@ class SocialsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
-                AssociateAction::make(),
+                // AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),

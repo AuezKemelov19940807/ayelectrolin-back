@@ -14,6 +14,8 @@ class BannerForm
         return $schema
             ->components([
                 ToggleButtons::make('language')
+                    ->label('Язык')
+
                     ->options([
                         'ru' => 'RU',
                         'kk' => 'KK',
@@ -67,7 +69,7 @@ class BannerForm
                     ->visible(fn ($get) => $get('language') === 'kk')
                     ->columnSpan('full'),
 
-              FileUpload::make('image')
+                FileUpload::make('image')
                     ->image()
                     ->disk('public')
                     ->directory('banners')

@@ -10,6 +10,16 @@ class EditBrand extends EditRecord
 {
     protected static string $resource = BrandResource::class;
 
+    public function getBreadcrumb(): string
+    {
+        return 'Редактировать';
+    }
+
+    public function getTitle(): string
+    {
+        return 'Редактировать бренды';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
