@@ -96,11 +96,18 @@ class SeoForm
                     ->columnSpanFull(),
 
                 // --- Общие поля ---
+                // FileUpload::make('og_image')
+                //     ->label('OG Image')
+                //     ->directory('seo')
+                //     ->disk('public')
+                //     ->image()
+                //     ->columnSpanFull(),
+
                 FileUpload::make('og_image')
                     ->label('OG Image')
-                    ->directory('seo')
-                    ->disk('public')
                     ->image()
+                    ->disk('public')
+                    ->directory('seo')
                     ->columnSpanFull(),
 
                 Select::make('twitter_card')

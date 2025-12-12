@@ -8,6 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
@@ -107,15 +108,23 @@ class SeoRelationManager extends RelationManager
 
             // Open Graph Image
             FileUpload::make('og_image')
-                ->label('OG изображение')
+                ->label('OG Image')
                 ->image()
                 ->disk('public')
-                ->directory('catalog/seo')
+                ->directory('seo')
                 ->columnSpanFull(),
 
             // Twitter card type
-            TextInput::make('twitter_card')
-                ->label('Тип Twitter-карточки (summary, large_image и т.д.)'),
+            Select::make('twitter_card')
+                ->label('Twitter Card')
+                ->options([
+                    'summary' => 'Summary',
+                    'summary_large_image' => 'Summary Large Image',
+                    'app' => 'App',
+                    'player' => 'Player',
+                ])
+                ->columnSpanFull()
+                ->required(false),
         ]);
     }
 

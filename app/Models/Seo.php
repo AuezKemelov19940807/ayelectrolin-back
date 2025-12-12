@@ -32,9 +32,9 @@ class Seo extends Model
         'twitter_card',
     ];
 
-    protected static function booted()
-    {
-        static::observe(\App\Observers\ImageToWebpObserver::class);
-    }
+    // protected static function booted()
+    // {
+    //     static::observe(\App\Observers\ImageToWebpObserver::class);
+    // }
 
 }

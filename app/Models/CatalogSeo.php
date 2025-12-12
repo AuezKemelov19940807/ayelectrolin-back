@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CatalogSeo extends Model
 {
-
     protected $table = 'catalog_seos';
 
     protected $fillable = [
@@ -23,11 +22,9 @@ class CatalogSeo extends Model
         return $this->belongsTo(Catalog::class);
     }
 
-
-    protected static function booted()
-    {
-        static::observe(\App\Observers\ImageToWebpObserver::class);
-    }
-
+    // protected static function booted()
+    // {
+    //     static::observe(\App\Observers\ImageToWebpObserver::class);
+    // }
 
 }

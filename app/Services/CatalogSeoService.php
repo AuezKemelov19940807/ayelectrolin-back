@@ -63,13 +63,15 @@ class CatalogSeoService
                 "og_title_{$lang}" => $data['og_title'] ?? $seo->{"og_title_{$lang}"},
                 "description_{$lang}" => $data['description'] ?? $seo->{"description_{$lang}"},
                 "og_description_{$lang}" => $data['og_description'] ?? $seo->{"og_description_{$lang}"},
-                "twitter_card" => $data['twitter_card'] ?? $seo->twitter_card,
+                'twitter_card' => $data['twitter_card'] ?? $seo->twitter_card,
             ]);
 
+            // --- ВАЖНО: логика как в SeoService ---
             if (isset($data['og_image'])) {
                 if ($request->hasFile('og_image')) {
                     $file = $request->file('og_image');
-                    $seo->og_image = $file->store('seo', 'public');
+                    $path = $file->store('seo', 'public'); // ВАЖНО!
+                    $seo->og_image = $path;
                     $seo->save();
                 } elseif (is_string($data['og_image'])) {
                     $seo->og_image = $data['og_image'];
